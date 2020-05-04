@@ -1,0 +1,18 @@
+releaseMode: false
+logFilePath: "/src/build/logs/"
+logDebugMode: true
+port: 7777
+database:
+    # Discovery is the database discovery service
+    # When enabled then the database will be set using that service (using the clientCode input)
+    # When disabled then the defaults from this config will be used instead
+    discovery:
+        enabled: true
+        server: "http://127.0.0.1:7778"
+        timeout: 10 # Timeout in seconds to expect the result
+    driver: "mysql"
+    username: "newuser"
+    password: "password"
+    name: "campaign_api_db"
+    server: "127.0.0.1"
+    port: 3306

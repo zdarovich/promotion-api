@@ -1,0 +1,125 @@
+basePath: /api/v1/
+definitions:
+  response.ErrorResponse:
+    properties:
+      status:
+        type: Status
+    type: object
+info:
+  contact: {}
+  description: POC of promotion API
+  license: {}
+  title: Promotion API
+  version: 1.0.3
+paths:
+  /:
+    post:
+      consumes:
+      - application/json
+      description: Save campaign
+      parameters:
+      - description: session key
+        in: formData
+        name: sessionKey
+        required: true
+        type: string
+      - description: client code
+        in: formData
+        name: clientCode
+        required: true
+        type: string
+      - description: client code
+        in: formData
+        name: request
+        required: true
+        type: string
+      - description: campaign IDs - (1,4,7)
+        in: formData
+        name: campaignID
+        required: true
+        type: string
+      - description: "2006-01-02"
+        in: formData
+        name: startDate
+        required: true
+        type: string
+      - description: "2006-01-02"
+        in: formData
+        name: endDate
+        required: true
+        type: string
+      - description: test
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: warehouseID
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: purchasedAmount
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: purchaseTotalValue
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: purchasedProductGroupID
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: specialPrice
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: percentageOff
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: sumOff
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: awardedProductGroupID
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: percentageOffMatchingItems
+        required: true
+        type: string
+      - description: "1"
+        in: formData
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Save campaign
+      tags:
+      - campaign
+swagger: "2.0"
+tags:
+- name: general
+- name: campaign

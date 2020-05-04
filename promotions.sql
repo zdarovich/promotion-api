@@ -1,0 +1,42 @@
+CREATE TABLE IF NOT EXISTS `campaign` (
+	  `id` int(11) NOT NULL AUTO_INCREMENT,
+	  `start_date` date NOT NULL,
+	  `end_date` date NOT NULL,
+	  `name` varchar(255) NOT NULL,
+	  `warehouse_id` int(11) NOT NULL,
+	  `purchased_amount` int(11) NOT NULL,
+	  `purchased_prodgroup_id` int(11) NOT NULL,
+	  `purchase_total_value` decimal(15,2) NOT NULL,
+	  `award_lowest_priced_item` tinyint(1) NOT NULL,
+	  `special_price` decimal(15,2) NOT NULL,
+	  `percentage_off` int(11) NOT NULL,
+	  `sum_off` decimal(15,2) NOT NULL,
+	  `awarded_prodgroup_id` int(11) NOT NULL,
+	  `percentage_off_all_items` int(11) NOT NULL,
+	  `sum_off_entire_purchase` decimal(15,2) NOT NULL,
+	  `rewardpoints` int(11) NOT NULL,
+	  `percentage_off_any_one_line` int(11) NOT NULL,
+	  `type` varchar(6) NOT NULL,
+	  `added` int(11) NOT NULL,
+	  `addedby` varchar(16) NOT NULL,
+	  `changed` int(11) NOT NULL,
+	  `changedby` varchar(16) NOT NULL,
+	  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `attributes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `obj_id` int(11) NOT NULL,
+  `obj_table` varchar(35) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `type` enum('int','text','double') NOT NULL DEFAULT 'text',
+  `value_text` varchar(255) NOT NULL,
+  `value_int` int(11) NOT NULL,
+  `value_double` double NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `obj_id` (`obj_id`),
+  KEY `obj_table` (`obj_table`),
+  KEY `name` (`name`),
+  KEY `value_text` (`value_text`),
+  KEY `value_int` (`value_int`)
+) ENGINE=InnoDB;
