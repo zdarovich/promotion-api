@@ -28,7 +28,7 @@ type (
 			campaignType string,
 		) (int, error)
 		SaveCampaigns(
-			c Campaign,
+			c *Campaign,
 		) error
 		UpdateCampaigns(
 			c Campaign,
@@ -47,9 +47,9 @@ type (
 		PurchasedAmount         int       `json:"purchased_amount"`
 		PurchasedProdgroupID    int       `json:"purchased_prodgroup_id"`
 		PurchaseTotalValue      float64   `json:"purchase_total_value"`
-		AwardLowestPricedItem   int       `json:"award_lowest_priced_item"`
+		AwardLowestPricedItem   bool      `json:"award_lowest_priced_item"`
 		SpecialPrice            float64   `json:"special_price"`
-		PercentageOff           int       `json:"percentage_off"`
+		PercentageOff           float64   `json:"percentage_off"`
 		SumOff                  float64   `json:"sum_off"`
 		AwardedProdgroupID      int       `json:"awarded_prodgroup_id"`
 		PercentageOffAllItems   int       `json:"percentage_off_all_items"`
@@ -57,9 +57,9 @@ type (
 		Rewardpoints            int       `json:"rewardpoints"`
 		PercentageOffAnyOneLine int       `json:"percentage_off_any_one_line"`
 		Type                    string    `json:"type"`
-		Added                   int       `json:"added"`
+		Added                   int64     `json:"added"`
 		Addedby                 string    `json:"addedby"`
-		Changed                 int       `json:"changed"`
+		Changed                 int64     `json:"changed"`
 		Changedby               string    `json:"changedby"`
 	}
 )
@@ -85,19 +85,22 @@ func (repository *Repository) UpdateCampaigns(
 }
 
 func (repository *Repository) SaveCampaigns(
-	c Campaign,
+	c *Campaign,
 ) error {
-	conditionsString, values := repository.getSaveConditions(c)
+	conditionsString, values := repository.getSaveConditions(*c)
 
 	var query = "INSERT INTO campaign" + conditionsString
 
-	_, err := repository.Database.NamedExec(query, values)
+	r, err := repository.Database.NamedExec(query, values)
 
 	if err != nil {
 		return err
 	}
+	id, err := r.LastInsertId()
 
-	return err
+	c.ID = int(id)
+
+	return nil
 }
 
 func (repository *Repository) GetCampaignsCount(

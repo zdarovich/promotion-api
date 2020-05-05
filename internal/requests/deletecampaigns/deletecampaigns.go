@@ -1,7 +1,6 @@
 package deletecampaigns
 
 import (
-	"errors"
 	"github.com/zdarovich/promotion-api/internal/api/errorcodes"
 	"github.com/zdarovich/promotion-api/internal/api/requests/root"
 	"github.com/zdarovich/promotion-api/internal/api/response"
@@ -28,16 +27,17 @@ type (
 // @Summary Delete campaign
 // @Description  Delete campaign
 // @Tags campaign
-// @Accept  json
+// @Accept  application/x-www-form-urlencoded
 // @Produce  json
-// @Param sessionKey formData string true "session key"
-// @Param clientCode formData string true "client code"
-// @Param request formData string true "client code"
-// @Param campaignID formData string true "campaign IDs - (1,4,7)"
-// @Success 200 "Created"
+// @Param sessionKey formData string true "ERPLY session key"
+// @Param clientCode formData string true "ERPLY client code"
+// @Param request formData string true "deleteCampaigns"
+// @Example request "deleteCampaigns"
+// @Param campaignID formData string false "1"
+// @Success 200 {object} response.SuccessResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
-// @Router / [POST]
+// @Router /deleteCampaigns [POST]
 func (deleteCampaigns *DeleteCampaigns) Handle(context root.IGinContext) (*response.Data, error) {
 
 	err := deleteCampaigns.validate(context)
@@ -48,7 +48,7 @@ func (deleteCampaigns *DeleteCampaigns) Handle(context root.IGinContext) (*respo
 
 	var totalRecordsCount int = 0
 	var recordsCount int = 0
-	var records interface{}
+	var records []campaignhelper.Record
 
 	var campaigns []campaign.Campaign
 
@@ -66,7 +66,6 @@ func (deleteCampaigns *DeleteCampaigns) Handle(context root.IGinContext) (*respo
 		return nil, err
 	}
 	recordsCount = len(campaigns)
-	records = deleteCampaigns.CampaignHelper.MapToArray(campaigns)
 
 	return &response.Data{
 		Total:           totalRecordsCount,
@@ -94,7 +93,7 @@ func (deleteCampaigns *DeleteCampaigns) validate(context root.IGinContext) error
 	// Required parameters
 	if inputParameters.CampaignID == 0 {
 
-		return errors.New(strconv.Itoa(errorcodes.CodeRequiredParameterMissing))
+		return errorcodes.New("campaignID", errorcodes.CodeRequiredParameterMissing)
 	}
 
 	deleteCampaigns.InputParameters = inputParameters
